@@ -17,15 +17,7 @@ public class Quiz : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        questionText.text = question.GetQuestion();
-
-        for(int i = 0; i < answerButtons.Length; i++)
-        {
-            TextMeshProUGUI buttonText = answerButtons[i].GetComponentInChildren<TextMeshProUGUI>();
-
-            buttonText.text = question.GetAnswer(i);
-        }
-
+        GetNextQuestion();
     }
 
     // Update is called once per frame
@@ -52,6 +44,44 @@ public class Quiz : MonoBehaviour
             questionText.text = "Incorrect! The correct answer is: \n" + correctAnswer;
             buttonImage = answerButtons[correctAnswerIndex].GetComponent<Image>();
             buttonImage.sprite = correctAnswerSprite;
+        }
+    }
+
+    void GetNextQuestion()
+    {
+        DisplayQuestion();
+        SetDefaultButtonSprite();
+        SetButtonState(true);
+    }
+
+    void DisplayQuestion()
+    {
+        questionText.text = question.GetQuestion();
+
+        for (int i = 0; i < answerButtons.Length; i++)
+        {
+            TextMeshProUGUI buttonText = answerButtons[i].GetComponentInChildren<TextMeshProUGUI>();
+
+            buttonText.text = question.GetAnswer(i);
+        }
+
+    }
+
+    void SetDefaultButtonSprite()
+    {
+        for (int i = 0; i < answerButtons.Length; i++)
+        {
+            Image buttonImage = answerButtons[i].GetComponent<Image>();
+            buttonImage.sprite = defaultAnswerSprite;
+        }
+    }
+
+    void SetButtonState(bool state)
+    {
+        for (int i = 0; i < answerButtons.Length; i++)
+        {
+            Button button = answerButtons[i].GetComponent<Button>();
+            button.interactable = state;
         }
     }
 }
