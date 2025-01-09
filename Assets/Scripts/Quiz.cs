@@ -21,8 +21,6 @@ public class Quiz : MonoBehaviour
     void Start()
     {
         timer = FindObjectOfType<Timer>();
-        Debug.Log("At the Start");
-        Debug.Log(timer.loadNextQuestion);
         timer.loadNextQuestion = true;
     }
 
