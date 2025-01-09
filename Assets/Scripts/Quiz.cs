@@ -19,7 +19,6 @@ public class Quiz : MonoBehaviour
     [SerializeField] Slider progressBar;
     [HideInInspector]public bool isGameComplete;
 
-
     int correctAnswerIndex;
 
     // Start is called before the first frame update
@@ -30,6 +29,8 @@ public class Quiz : MonoBehaviour
         scoreTracker = FindObjectOfType<ScoreTracker>();
         progressBar.maxValue = questions.Count;
         progressBar.value = 0;
+        scoreText.text = "Score: 0 %";
+        
     }
 
     // Update is called once per frame
@@ -50,6 +51,7 @@ public class Quiz : MonoBehaviour
 
     public void OnAnswerSelected(int index)
     {
+
         DisplayAnswer(index);
 
         SetButtonState(false);

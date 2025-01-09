@@ -10,7 +10,7 @@ public class EndScreen : MonoBehaviour
     ScoreTracker scoreTracker;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         scoreTracker = FindObjectOfType<ScoreTracker>();
     }
