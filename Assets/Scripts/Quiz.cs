@@ -11,19 +11,23 @@ public class Quiz : MonoBehaviour
     [SerializeField] GameObject[] answerButtons;
     [SerializeField] Sprite defaultAnswerSprite;
     [SerializeField] Sprite correctAnswerSprite;
+    [SerializeField] Image timerImage;
+    Timer timer;
 
     int correctAnswerIndex;
 
     // Start is called before the first frame update
     void Start()
     {
+        timer = FindObjectOfType<Timer>();
         GetNextQuestion();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        timerImage.fillAmount = timer.fillFraction;
+        TimeIsUp();
     }
 
     public void OnAnswerSelected(int index)
@@ -45,8 +49,22 @@ public class Quiz : MonoBehaviour
             buttonImage = answerButtons[correctAnswerIndex].GetComponent<Image>();
             buttonImage.sprite = correctAnswerSprite;
         }
+
+        timer.isQuestionAnswered = true;
     }
 
+    void TimeIsUp()
+    {
+        if (timer.isTimeUp)
+        {
+            correctAnswerIndex = question.GetCorrectAnswerIndex();
+            Image buttonImage;
+            string correctAnswer = question.GetAnswer(correctAnswerIndex);
+            questionText.text = "Time is up! The correct answer is: \n" + correctAnswer;
+            buttonImage = answerButtons[correctAnswerIndex].GetComponent<Image>();
+            buttonImage.sprite = correctAnswerSprite;
+        }
+    }
     void GetNextQuestion()
     {
         DisplayQuestion();
