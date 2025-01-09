@@ -16,15 +16,20 @@ public class Quiz : MonoBehaviour
     Timer timer;
     [SerializeField] TextMeshProUGUI scoreText;
     ScoreTracker scoreTracker;
+    [SerializeField] Slider progressBar;
+    [HideInInspector]public bool isGameComplete;
+
 
     int correctAnswerIndex;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         timer = FindObjectOfType<Timer>();
         timer.loadNextQuestion = true;
         scoreTracker = FindObjectOfType<ScoreTracker>();
+        progressBar.maxValue = questions.Count;
+        progressBar.value = 0;
     }
 
     // Update is called once per frame
@@ -34,6 +39,10 @@ public class Quiz : MonoBehaviour
         TimeIsUp();
         if (timer.loadNextQuestion)
         {
+            if (progressBar.value == progressBar.maxValue)
+            {
+                isGameComplete = true;
+            }
             GetNextQuestion();
             timer.loadNextQuestion = false;
         }
@@ -95,6 +104,7 @@ public class Quiz : MonoBehaviour
             DisplayQuestion();
             SetDefaultButtonSprite();
             SetButtonState(true);
+            progressBar.value++;
             scoreTracker.IncrementQuestionsSeen();
         }
     }
