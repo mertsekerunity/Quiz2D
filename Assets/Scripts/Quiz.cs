@@ -21,7 +21,9 @@ public class Quiz : MonoBehaviour
     void Start()
     {
         timer = FindObjectOfType<Timer>();
-        //GetNextQuestion();
+        Debug.Log("At the Start");
+        Debug.Log(timer.loadNextQuestion);
+        timer.loadNextQuestion = true;
     }
 
     // Update is called once per frame
@@ -29,12 +31,8 @@ public class Quiz : MonoBehaviour
     {
         timerImage.fillAmount = timer.fillFraction;
         TimeIsUp();
-        Debug.Log("First");
-        Debug.Log(timer.loadNextQuestion);
         if (timer.loadNextQuestion)
         {
-            Debug.Log(timer.loadNextQuestion);
-            Debug.Log("Second");
             GetNextQuestion();
             timer.loadNextQuestion = false;
         }
