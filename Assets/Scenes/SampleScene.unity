@@ -1604,7 +1604,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f256016645045d46a5d63bffdfa3d58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  question: {fileID: 11400000, guid: 3f0e9851b58526349a483321fc22861b, type: 2}
+  questions:
+  - {fileID: 11400000, guid: 3f0e9851b58526349a483321fc22861b, type: 2}
+  - {fileID: 11400000, guid: cc59ba7e4fa005f4a8daae09cf3a188d, type: 2}
+  - {fileID: 11400000, guid: 9792723a964d8964cbba573cf0d06547, type: 2}
+  - {fileID: 11400000, guid: 080c95c563db72e4d8d14c221d6c69ed, type: 2}
   questionText: {fileID: 393203905}
   answerButtons:
   - {fileID: 497743746}

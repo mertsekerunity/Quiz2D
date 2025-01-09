@@ -15,7 +15,7 @@ public class Timer : MonoBehaviour
 
     [HideInInspector] public bool isQuestionAnswered = false;
     [HideInInspector] public bool isTimeUp = false;
-    [HideInInspector] public bool loadNextQuestion;
+    [HideInInspector] public bool loadNextQuestion = true;
     [HideInInspector] public float fillFraction;
 
     // Start is called before the first frame update

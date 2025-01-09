@@ -6,7 +6,8 @@ using UnityEngine.UI;
 
 public class Quiz : MonoBehaviour
 {
-    [SerializeField] QuestionSO question;
+    QuestionSO currentQuestion;
+    [SerializeField] List<QuestionSO> questions = new List<QuestionSO>();
     [SerializeField] TextMeshProUGUI questionText;
     [SerializeField] GameObject[] answerButtons;
     [SerializeField] Sprite defaultAnswerSprite;
@@ -20,7 +21,7 @@ public class Quiz : MonoBehaviour
     void Start()
     {
         timer = FindObjectOfType<Timer>();
-        GetNextQuestion();
+        //GetNextQuestion();
     }
 
     // Update is called once per frame
@@ -28,11 +29,29 @@ public class Quiz : MonoBehaviour
     {
         timerImage.fillAmount = timer.fillFraction;
         TimeIsUp();
+        Debug.Log("First");
+        Debug.Log(timer.loadNextQuestion);
+        if (timer.loadNextQuestion)
+        {
+            Debug.Log(timer.loadNextQuestion);
+            Debug.Log("Second");
+            GetNextQuestion();
+            timer.loadNextQuestion = false;
+        }
     }
 
     public void OnAnswerSelected(int index)
     {
-        correctAnswerIndex = question.GetCorrectAnswerIndex();
+        DisplayAnswer(index);
+
+        SetButtonState(false);
+
+        timer.isQuestionAnswered = true;
+    }
+
+    void DisplayAnswer(int index)
+    {
+        correctAnswerIndex = currentQuestion.GetCorrectAnswerIndex();
         Image buttonImage;
 
         if (index == correctAnswerIndex)
@@ -44,43 +63,47 @@ public class Quiz : MonoBehaviour
         }
         else
         {
-            string correctAnswer = question.GetAnswer(correctAnswerIndex);
+            string correctAnswer = currentQuestion.GetAnswer(correctAnswerIndex);
             questionText.text = "Incorrect! The correct answer is: \n" + correctAnswer;
             buttonImage = answerButtons[correctAnswerIndex].GetComponent<Image>();
             buttonImage.sprite = correctAnswerSprite;
         }
-
-        timer.isQuestionAnswered = true;
     }
 
     void TimeIsUp()
     {
         if (timer.isTimeUp)
         {
-            correctAnswerIndex = question.GetCorrectAnswerIndex();
+            correctAnswerIndex = currentQuestion.GetCorrectAnswerIndex();
             Image buttonImage;
-            string correctAnswer = question.GetAnswer(correctAnswerIndex);
+            string correctAnswer = currentQuestion.GetAnswer(correctAnswerIndex);
             questionText.text = "Time is up! The correct answer is: \n" + correctAnswer;
             buttonImage = answerButtons[correctAnswerIndex].GetComponent<Image>();
             buttonImage.sprite = correctAnswerSprite;
+
+            SetButtonState(false);
         }
     }
     void GetNextQuestion()
     {
-        DisplayQuestion();
-        SetDefaultButtonSprite();
-        SetButtonState(true);
+        if(questions.Count > 0)
+        {
+            GetRandomQuestion();
+            DisplayQuestion();
+            SetDefaultButtonSprite();
+            SetButtonState(true);
+        }
     }
 
     void DisplayQuestion()
     {
-        questionText.text = question.GetQuestion();
+        questionText.text = currentQuestion.GetQuestion();
 
         for (int i = 0; i < answerButtons.Length; i++)
         {
             TextMeshProUGUI buttonText = answerButtons[i].GetComponentInChildren<TextMeshProUGUI>();
 
-            buttonText.text = question.GetAnswer(i);
+            buttonText.text = currentQuestion.GetAnswer(i);
         }
 
     }
@@ -100,6 +123,16 @@ public class Quiz : MonoBehaviour
         {
             Button button = answerButtons[i].GetComponent<Button>();
             button.interactable = state;
+        }
+    }
+
+    void GetRandomQuestion()
+    {
+        int index = Random.Range(0, questions.Count);
+        currentQuestion = questions[index];
+        if (questions.Contains(currentQuestion))
+        {
+            questions.Remove(currentQuestion);
         }
     }
 }
